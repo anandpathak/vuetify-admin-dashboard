@@ -14,7 +14,7 @@
             class="elevation-12">
             <v-toolbar
               color="general">
-              <v-toolbar-title>Admin Panel</v-toolbar-title>
+              <v-toolbar-title>API proxy Access</v-toolbar-title>
               <v-spacer/>
             </v-toolbar>
             <v-card-text>
