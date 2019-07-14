@@ -256,7 +256,7 @@ export default {
 
   methods: {
     getusernames () {
-      this.$http.get('/users')
+      this.$http.get('/users/list')
       .then(response => {
         this.UserList = response.data.Users
         })

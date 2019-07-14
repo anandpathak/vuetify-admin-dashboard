@@ -16,7 +16,7 @@
           color="warning"
           type="Line"
         >
-          <h4 class="title font-weight-light">Daily StackOverflow Visits</h4>
+          <h4 class="title font-weight-light">Daily API visits</h4>
           <p class="category d-inline-flex font-weight-light">
             <v-icon
               color="green"
@@ -51,7 +51,7 @@
           color="red"
           type="Bar"
         >
-          <h4 class="title font-weight-light">Emails telling you your code sucks</h4>
+          <h4 class="title font-weight-light">Error received on APIs</h4>
           <p class="category d-inline-flex font-weight-light">Last Campaign Performance</p>
 
           <template slot="actions">
@@ -76,8 +76,8 @@
           color="indigo"
           type="Line"
         >
-          <h3 class="title font-weight-light">Completed Tasks</h3>
-          <p class="category d-inline-flex font-weight-light">Last Last Campaign Performance</p>
+          <h3 class="title font-weight-light">Write API hits</h3>
+          <p class="category d-inline-flex font-weight-light">Count of Write API hits</p>
 
           <template slot="actions">
             <v-icon
@@ -99,8 +99,8 @@
         <material-stats-card
           color="green"
           icon="mdi-store"
-          title="Revenue"
-          value="$34,245"
+          title="CPU usage"
+          value="34%"
           sub-icon="mdi-calendar"
           sub-text="Last 24 Hours"
         />
@@ -132,7 +132,7 @@
         <material-stats-card
           color="red"
           icon="mdi-information-outline"
-          title="Fixed Issues"
+          title="Application issues"
           value="75"
           sub-icon="mdi-tag"
           sub-text="Tracked from Github"
@@ -161,6 +161,7 @@
           color="orange"
           title="Employee Stats"
           text="New employees on 15th September, 2016"
+          style="display:none"
         >
           <v-data-table
             :headers="headers"
@@ -195,7 +196,8 @@
       >
         <material-card
           class="card-tabs"
-          color="general">
+          color="general"
+          style="display:none">
           <v-flex
             slot="header"
           >

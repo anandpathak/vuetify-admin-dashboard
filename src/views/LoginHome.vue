@@ -2,7 +2,8 @@
 <template>
   <v-app
     id="login-home"
-    dark>
+    light
+    style="background: url(/login.png) center no-repeat">
 
     <transition mode="out-in">
       <router-view/>

@@ -1,5 +1,5 @@
 <template>
-	<v-toolbar id="core-toolbar" dark style="background: #424242;" flat prominent>
+	<v-toolbar id="core-toolbar" light  flat prominent>
 		<div class="v-toolbar-title">
 			<v-toolbar-title class="font-weight-light text-general">
 				<v-btn v-if="responsive" class="default v-btn--simple" icon @click.stop="onClickBtn">

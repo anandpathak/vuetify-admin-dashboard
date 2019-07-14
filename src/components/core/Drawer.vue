@@ -3,7 +3,7 @@
     id="app-drawer"
     v-model="inputValue"
     app
-    dark
+    light
     floating
     persistent
     mobile-break-point="991"

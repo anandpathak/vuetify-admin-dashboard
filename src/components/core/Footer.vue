@@ -19,8 +19,8 @@
       &copy;
       {{ (new Date()).getFullYear() }}
       <a
-        href="https://twitter.com/Cleesus"
-        target="_blank">@cleesus</a>, made with
+        href="https://twitter.com/anandpathak69"
+        target="_blank">@anandpathak69</a>, made with
       <v-icon
         color="tertiary"
         size="17">mdi-heart</v-icon>
@@ -34,8 +34,8 @@ export default {
   data: () => ({
     links: [
       { name: 'Home', Link: '/dashboard' },
-      { name: 'Demo', Link: 'https://clintoxx.github.io/vuetify-admin-dashboard/' },
-      { name: 'GitHub', Link: 'https://github.com/ClintOxx' },
+      { name: 'Machinesense', Link: 'https://machinesense.com' },
+      { name: 'GitHub', Link: 'https://github.com/Novatec1' },
     ]
   })
 }

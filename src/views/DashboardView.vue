@@ -2,7 +2,7 @@
   <v-content>
     <v-app
       id="dashboard-view"
-      dark>
+      light>
       <core-filter />
 
       <core-toolbar />
