@@ -62,6 +62,14 @@ export default [
         component: () => import(`@/components/DashViews/UserProfile.vue`)
       },
       {
+        path: 'routes',
+        meta: {
+          name: 'Routes',
+          requiresAuth: true
+        },
+        component: () => import(`@/components/DashViews/RoutesList.vue`)
+      },
+      {
         path: 'table-list',
         meta: {
           name: 'Table List',

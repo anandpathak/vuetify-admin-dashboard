@@ -89,6 +89,11 @@ export default {
         text: 'Table List'
       },
       {
+        to: '/dashboard/routes',
+        icon: 'mdi-access-point',
+        text: 'Routes List'
+      },
+      {
         to: '/dashboard/user-tables',
         icon: 'mdi-table-edit',
         text: 'Users Table'
