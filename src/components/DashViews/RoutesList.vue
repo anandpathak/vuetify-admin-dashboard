@@ -22,13 +22,13 @@
                       <v-text-field v-model="proxyItem.remote_url" label="Remote URL" />
                     </v-flex>
                     <v-flex xs12 sm6 md6>
-                      <v-select  label="Choose User Credential" :items="proxyItem.UserList" item-text="username" item-value="_id" v-on:change="onUserChange"></v-select>
+                      <v-select  label="Choose User Credential" :items="proxyItem.UserList" item-text="username" item-value="_id" v-on:change="onUserChangeInProxy"></v-select>
                     </v-flex>
                     <v-flex xs12 sm6 md12 v-if="showCredentialBox">
                       <v-select  label="Choose Authorization Type" :items="proxyItem.dialogCredentialList" item-text="type" item-value="_id" v-model="proxyItem.SelectedCredential"></v-select>
                     </v-flex>
                      <v-flex xs12 sm12 md12>
-                      <v-select box  attach multiple label="Policy" :items="AllowedPolicyList" item-text="name" item-value="name" v-model="proxyItem.policyName" v-on:change="onPolicyChange"></v-select>
+                      <v-select box  attach multiple label="Policy" :items="AllowedPolicyList" item-text="name" item-value="name" v-model="proxyItem.policyName" v-on:change="onPolicyChangeInProxy"></v-select>
                     </v-flex>
                     <v-flex xs12>
                       <v-textarea
@@ -90,7 +90,7 @@
                       <v-text-field v-model="editedRouteItem.method" label="*Method" />
                     </v-flex>
                      <v-flex xs12 sm12 md12>
-                      <v-select box  attach multiple label="Policy" :items="AllowedPolicyList" item-text="name" item-value="name" v-model="editedRouteItem.policyName" v-on:change="onPolicyChangeEachRoute"></v-select>
+                      <v-select box  attach multiple label="Policy" :items="AllowedPolicyList" item-text="name" item-value="name" v-model="editedRouteItem.policyName" v-on:change="onPolicyChangeInRoute"></v-select>
                     </v-flex>
                     <v-flex xs12>
                       <v-textarea
@@ -132,8 +132,12 @@
 </template>
 
 <script>
-import { constants, pbkdf2 } from 'crypto';
   export default {
+    /**
+     * created();
+     * called when page is created. load all the proxy setups
+     * 
+     */
     created() {
       this.$http.get('/proxy/query?field={"remote_url":1,"name":1, "credential": 1, "policy": 1}')
         .then(response => {
@@ -142,18 +146,32 @@ import { constants, pbkdf2 } from 'crypto';
         .catch(error => console.log(error))
     },
     methods: {
-      onPolicyChange(selectedPolicyName) {
+      /**
+       * onPolicyChangeInProxy();
+       * when policy is changed inside dialog form for proxy list;
+       * compute the policy matrix
+       */
+      onPolicyChangeInProxy(selectedPolicyName) {
         let tempPolicyItem = [];
         tempPolicyItem =  (this.proxyItem.policyMatrix === undefined) ? [] :  JSON.parse(this.proxyItem.policyMatrix);
         tempPolicyItem = this._PolicyChangeComputation(selectedPolicyName, tempPolicyItem);
         this.proxyItem.policyMatrix = JSON.stringify(tempPolicyItem, null, '\t');
       },
-      onPolicyChangeEachRoute(selectedPolicyName) {
+      /**
+       * onPolicyChangeInRoute();
+       * when policy is changed inside dialog form from route list;
+       * compute the policy matrix
+       */
+      onPolicyChangeInRoute(selectedPolicyName) {
         let tempPolicyItem = [];
         tempPolicyItem = (this.editedRouteItem.policyMatrix === undefined ) ? [] :  JSON.parse(this.editedRouteItem.policyMatrix);
         tempPolicyItem = this._PolicyChangeComputation(selectedPolicyName, tempPolicyItem);
         this.editedRouteItem.policyMatrix = JSON.stringify(tempPolicyItem, null, '\t');
       },
+      /**
+       * _PolicyChangeComputation(selectedPolicyName, tempPolicyItem)
+       * check if the policy matrix is valid and remove or add template if policy is selected
+       */
       _PolicyChangeComputation(selectedPolicyName, tempPolicyItem){
         selectedPolicyName.forEach(policy=> {
           const ispolicyexist = tempPolicyItem.find(elem => elem.name === policy);
@@ -170,13 +188,21 @@ import { constants, pbkdf2 } from 'crypto';
         });
         return tempPolicyItem;
       },
-      onUserChange (selectedUserId) {
+      /**
+       * onUserChangeInProxy(selectedUserId);
+       * Load the allowed credential if user is changed in Proxy list
+       */
+      onUserChangeInProxy (selectedUserId) {
         this.$http.get(`/credentials/query?filter={"userid":"${selectedUserId}"}&field={}`).then(response => {
           this.proxyItem.dialogCredentialList = response.data;
           this.showCredentialBox = true;
         })
         .catch( error => console.log(error));
       },
+      /**
+       * proxyDialogLoad();
+       * load users if the proxy dialog is loaded
+       */
       proxyDialogLoad(){
         //get the list of users
         this.$http.get(`/users/query?field={"username":1}`).then(response => {
@@ -185,6 +211,10 @@ import { constants, pbkdf2 } from 'crypto';
         .catch(error => console.log(error));
         this.getPolicyList();
       },
+      /**
+       * getPolicyList()
+       * load the list of allowed policy
+       */
       getPolicyList() {
          this.$http.get(`/credentials/policy/list`).then( response => {
           console.log('policy',response)
@@ -192,6 +222,10 @@ import { constants, pbkdf2 } from 'crypto';
         })
         .catch( error => console.log(error));
       },
+      /**
+       * editProxyItem(item, triggerDialog);
+       * when Item is selected from proxy list. load data to proxy dialog and trigger proxy load function
+       */
       editProxyItem(item, triggerDialog) {
         this.proxyItem= {
           _id : item._id,
@@ -209,8 +243,11 @@ import { constants, pbkdf2 } from 'crypto';
           this.showCredentialBox = true;
           this.ProxyDialog = true;
         })
-        console.log(item, this.proxyItem);
       },
+      /**
+       * editRouteItem(item, triggerDialog);
+       * when Item is selected from Route list. load data to route dialog and trigger route dialog load function
+       */
       editRouteItem (item, triggerDialog) {
         console.log(item);
         this.RouteDialog = true;
@@ -226,6 +263,10 @@ import { constants, pbkdf2 } from 'crypto';
         // load policy options
         triggerDialog();
       },
+      /**
+       * getRoutesByProxyId( id, name);
+       * load the route related to proxy selected. 
+       */
       getRoutesByProxyId(id,name) {
         this.selectedProxyItem.value= id;
         this.selectedProxyItem.name = name
@@ -238,13 +279,21 @@ import { constants, pbkdf2 } from 'crypto';
         console.log(id);
       },
       _generateHeader(listOfHeader) {
-        return listOfHeader.map(element => {
+        const ignoreHeader = ['__v','proxyId', '_id','creation_date'];
+        const list =  listOfHeader.map(element => {
           return {
             sortable: false,
             text: element,
             value: element
           }
+        }).filter(elem => ignoreHeader.indexOf(elem.value) === -1);
+        list.push({
+          sortable: false,
+          text: 'Action',
+          value: 'Action'
         });
+        return list;
+        
       },
       closeRouteDialog () {
         this.RouteDialog = false;
