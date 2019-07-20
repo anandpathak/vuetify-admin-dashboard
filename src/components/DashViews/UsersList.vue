@@ -2,7 +2,7 @@
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap>
       <v-flex md12 style="margin-bottom: 48px">
-        <material-card color="green" flat full-width title="Proxy Table" text="list of all Proxy List">
+        <material-card color="green" flat full-width title="User Table" text="list of all Users">
           <v-spacer></v-spacer>
           <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details> -->
            </v-text-field>
@@ -50,14 +50,12 @@
             </v-card>
           </v-dialog>
 
-          <v-data-table :headers="headers" :items="proxyList">
+          <v-data-table :headers="userHeaders" :items="userList">
             <template slot="headerCell" slot-scope="{ header }">
               <span class="subheading font-weight-light text--darken-3" v-text="header.text" />
             </template>
             <template slot="items" slot-scope="{ item }">
-              <td>{{ item.name }}</td>
-              <td>{{ item.remote_url }}</td>
-              <td>{{ item._id }}</td>
+              <td v-for="(k, i) in userHeaders" :key="i">{{ item[k.value] }}</td>
               <td class="text-xs-right">
                 <v-icon medium class="mr-2" @click="getRoutesByProxyId(item._id,item.name)">mdi-arrow-down-drop-circle-outline</v-icon>
                 <v-icon medium @click="editProxyItem(item,proxyDialogLoad)">edit</v-icon>
@@ -139,9 +137,17 @@
      * 
      */
     created() {
-      this.$http.get('/proxy/query?field={"remote_url":1,"name":1, "credential": 1, "policy": 1}')
+      this.$http.get('/users/query?field={}')
         .then(response => {
-          this.proxyList = response.data
+            
+            this.userHeaders = Object.keys(response.data[0]).map(val => {
+                return {
+                    sortable: false,
+                    text: val,
+                    value: val
+                }
+            });
+            this.userList = response.data;
         })
         .catch(error => console.log(error))
     },
@@ -353,11 +359,11 @@
           this.proxyItem = Object.assign({}, this.defaultItem)
           this.showCredentialBox = false;
           // replace if id entry is updated
-          const elem = this.proxyList.findIndex(cluster => cluster._id == response.data._id);
+          const elem = this.userList.findIndex(cluster => cluster._id == response.data._id);
           if(elem >= 0 ){
-            self.proxyList[elem] = Object.assign(self.proxyList[elem], response.data);
+            self.userList[elem] = Object.assign(self.userList[elem], response.data);
           } else {
-            self.proxyList.push(response.data);
+            self.userList.push(response.data);
           }
           self.ProxyDialog = false
         }).catch(error =>  {
@@ -369,29 +375,8 @@
       ProxyDialog: false,
       RouteDialog: false,
       search : '',
-      headers: [{
-          sortable: false,
-          text: 'Name',
-          value: 'name'
-        },
-        {
-          sortable: false,
-          text: 'Remote URL',
-          value: 'remote_url'
-        },
-        {
-          sortable: false,
-          text: 'ID',
-          value: '_id'
-        },
-        {
-          sortable: false,
-          text: 'Action',
-          value: 'action',
-          align: 'right'
-        }
-      ],
-      proxyList: [],
+      userHeaders: [ ],
+      userList: [],
       selectedRoute: {
         value: '',
         state: false

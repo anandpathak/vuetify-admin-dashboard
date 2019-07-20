@@ -78,41 +78,46 @@ export default {
         icon: 'mdi-view-dashboard',
         text: 'Dashboard'
       },
-      {
-        to: '/dashboard/user-profile',
-        icon: 'mdi-account',
-        text: 'User Profile'
-      },
-      {
-        to: '/dashboard/table-list',
-        icon: 'mdi-clipboard-outline',
-        text: 'Table List'
-      },
+      // {
+      //   to: '/dashboard/user-profile',
+      //   icon: 'mdi-account',
+      //   text: 'User Profile'
+      // },
+      // {
+      //   to: '/dashboard/table-list',
+      //   icon: 'mdi-clipboard-outline',
+      //   text: 'Table List'
+      // },
       {
         to: '/dashboard/routes',
         icon: 'mdi-access-point',
         text: 'Routes List'
       },
       {
-        to: '/dashboard/user-tables',
-        icon: 'mdi-table-edit',
-        text: 'Users Table'
+        to: '/dashboard/users',
+        icon: 'mdi-account-card-details',
+        text: 'Users List'
       },
-      {
-        to: '/dashboard/typography',
-        icon: 'mdi-format-font',
-        text: 'Typography'
-      },
+      // {
+      //   to: '/dashboard/user-tables',
+      //   icon: 'mdi-table-edit',
+      //   text: 'Users Table'
+      // },
+      // {
+      //   to: '/dashboard/typography',
+      //   icon: 'mdi-format-font',
+      //   text: 'Typography'
+      // },
       {
         to: '/dashboard/icons',
         icon: 'mdi-chart-bubble',
         text: 'Icons'
       },
-      {
-        to: '/dashboard/maps',
-        icon: 'mdi-map-marker',
-        text: 'Maps'
-      },
+      // {
+      //   to: '/dashboard/maps',
+      //   icon: 'mdi-map-marker',
+      //   text: 'Maps'
+      // },
       {
         to: '/dashboard/notifications',
         icon: 'mdi-bell',
